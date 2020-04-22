@@ -15,4 +15,9 @@ router.post('/members', function(req, res, next) {
   res.json(result);
 });
 
+router.get('',(req,res) => {
+  res.send("GET USERS");
+}
+);
+
 module.exports = router;
