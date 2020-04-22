@@ -5,7 +5,7 @@ var {UserService} = require("../service/UserService");
 var router = express.Router();
 
 /* GET users listing. */
-router.post('/members', function(req, res, next) {
+router.post('', function(req, res, next) {
   // var userService = new UserService();
   // var userData = req.body;
   //
