@@ -47,7 +47,7 @@ function SqlRepository(tableName, cols, rest) {
 SqlRepository.prototype.findAll = (conn) => {
     var result = null;
 
-    conn.query('SELECT * FROM ' + this.tableName, (error, rows, cols) => {
+    conn.query('SELECT * FROM ' + this.tableName, (error, rows) => {
         if (error) throw error;
 
         result = rows;
@@ -70,7 +70,7 @@ SqlRepository.prototype.findBy = (conn,  cols) => {
         });
     }
 
-    conn.query(queryString, (error, rows, coloumns) => {
+    conn.query(queryString, (error, rows) => {
         if (error) throw error;
 
         result = rows;
@@ -93,7 +93,7 @@ SqlRepository.prototype.insert = (conn,  cols) => {
     queryString = queryString.substring(0, queryString.length - 1) + ')';
     queryString2 = queryString2.substring(0, queryString2.length - 1) + ')';
 
-    conn.query(queryString + queryString2, (error, rows, columns) => {
+    conn.query(queryString + queryString2, (error, rows) => {
         if (error) throw error;
 
         result = rows;
@@ -118,7 +118,7 @@ SqlRepository.prototype.delete = (conn, cols) => {
 
     }
 
-    conn.query(queryString, (error, rows, columns) => {
+    conn.query(queryString, (error, rows) => {
         if (error) throw error;
 
         result = rows;
@@ -151,7 +151,7 @@ SqlRepository.prototype.update = (conn, cols, conds) => {
         });
     }
 
-    conn.query(queryString, (error, rows, columns) => {
+    conn.query(queryString, (error, rows) => {
         if (error) throw error;
 
         result = rows;
