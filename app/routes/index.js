@@ -29,7 +29,7 @@ router.get('/', function (req, res, next) {
     ])
 
     db.findAll( mysqlConn.pool(),'testTable');
-    res.render('index', {title: 'Express'});
+    // res.render('index', {title: 'Express'});
 });
 
 module.exports = router;

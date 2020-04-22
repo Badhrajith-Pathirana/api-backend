@@ -39,64 +39,65 @@ UserService.prototype.loginUser = (userData) => {
 };
 
 UserService.prototype.registerUser = (userData) => {
-    var connection = mysqlConn.pool();
-    connection.connect();
-    var cols = [{
-        name: 'first_name',
-        value: userData.firstName,
-        isStringData: true
-    }, {
-        name: 'last_name',
-        value: userData.lastName,
-        isStringData: true
-    }, {
-        name: 'user_type',
-        value: userData.userType === 'exp' ? 'EXPERT' : userData.userType === 'std' ? 'STUDENT' : null,
-        isStringData: true
-    }, {
-        name: 'username',
-        value: userData.username,
-        isStringData: true
-    }, {
-        name: 'national_id',
-        value: userData.nic,
-        isStringData: true
-    }, {
-        name: 'email',
-        value: userData.email,
-        isStringData: true
-    }, {
-        name: 'profession',
-        value: userData.profession,
-        isStringData: true
-    }, {
-        name: 'affilidate',
-        value: userData.afflidate,
-        isStringData: true
-    }, {
-        name: 'password',
-        value: userData.password,
-        isStringData: true
-    }, {
-        name: 'status',
-        value: 0,
-        isStringData: false
-    }];
-
-    var result = this.userRepository.insert(connection, cols);
-
-    if (result !== null) {
-        connection.destroy();
-        if (result.password) {
-            result.password = null;
-        }
-        return result;
-    } else {
-        connection.destroy();
-        return {
-            code: 40003     // code for error with user registration
-        }
-    }
+    console.log("SERVICE DATA ::::::::::::::::::::::::::::::",userData);
+    // var connection = mysqlConn.pool();
+    // connection.connect();
+    // var cols = [{
+    //     name: 'first_name',
+    //     value: userData.firstName,
+    //     isStringData: true
+    // }, {
+    //     name: 'last_name',
+    //     value: userData.lastName,
+    //     isStringData: true
+    // }, {
+    //     name: 'user_type',
+    //     value: userData.userType === 'exp' ? 'EXPERT' : userData.userType === 'std' ? 'STUDENT' : null,
+    //     isStringData: true
+    // }, {
+    //     name: 'username',
+    //     value: userData.username,
+    //     isStringData: true
+    // }, {
+    //     name: 'national_id',
+    //     value: userData.nic,
+    //     isStringData: true
+    // }, {
+    //     name: 'email',
+    //     value: userData.email,
+    //     isStringData: true
+    // }, {
+    //     name: 'profession',
+    //     value: userData.profession,
+    //     isStringData: true
+    // }, {
+    //     name: 'affilidate',
+    //     value: userData.afflidate,
+    //     isStringData: true
+    // }, {
+    //     name: 'password',
+    //     value: userData.password,
+    //     isStringData: true
+    // }, {
+    //     name: 'status',
+    //     value: 0,
+    //     isStringData: false
+    // }];
+    //
+    // var result = this.userRepository.insert(connection, cols);
+    //
+    // if (result !== null) {
+    //     connection.destroy();
+    //     if (result.password) {
+    //         result.password = null;
+    //     }
+    //     return result;
+    // } else {
+    //     connection.destroy();
+    //     return {
+    //         code: 40003     // code for error with user registration
+    //     }
+    // }
 
 };
 
