@@ -1,6 +1,5 @@
-import {UserRepository} from "../repository/UserRepository";
-
 var mysqlConn = require('../db/mysqlconn');
+var {UserRepository} = require("../repository/UserRepository");
 
 var UserService = function () {
     this.userRepository = new UserRepository();
@@ -61,11 +60,11 @@ UserService.prototype.registerUser = (userData) => {
     }, {
         name: 'national_id',
         value: userData.nic,
-        isStringData:true
+        isStringData: true
     }, {
         name: 'email',
         value: userData.email,
-        isStringData:true
+        isStringData: true
     }, {
         name: 'profession',
         value: userData.profession,

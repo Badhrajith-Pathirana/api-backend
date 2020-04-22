@@ -1,6 +1,7 @@
-import {UserService} from "../service/UserService";
+
 
 var express = require('express');
+var {UserService} = require("../service/UserService");
 var router = express.Router();
 
 /* GET users listing. */
@@ -14,5 +15,4 @@ router.post('/members', function(req, res, next) {
   res.json(result);
 });
 
-router.
 module.exports = router;
