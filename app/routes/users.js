@@ -21,6 +21,16 @@ router.get('',(req,res) => {
 }
 );
 
+router.put('/:id',(req,res) => {
+  console.log("REQ PARAM :::::::::::::::: ",req.params.id);
+
+});
+
+router.delete('/:id',(req,res) => {
+  console.log("REQ PARAM :::::::::::::::: ",req.params.id);
+
+});
+
 module.exports = router;
 
 
