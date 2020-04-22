@@ -1,7 +1,7 @@
 import {SqlRepository} from "../data/sqltemplate";
 
 var CategoryRepository = function () {
-    this.tabName = 'post';
+    this.tabName = 'category';
     this.cols = [{
         name: 'id',
         type: 'int',
