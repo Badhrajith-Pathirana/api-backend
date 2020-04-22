@@ -29,7 +29,7 @@ var CommentRepository = function () {
     }];
 
     var rest = 'CONSTRAINT fk_comment_post FOREIGN KEY (post_id) REFERENCES post(id), CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES user(id)';
-    SqlRepository.call(this.tabName, this.cols, rest);
+    SqlRepository.call('','comment', this.cols, rest);
 };
 
 CommentRepository.prototype = Object.create(SqlRepository.prototype);

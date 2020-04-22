@@ -3,9 +3,11 @@ var mysqlConn = require('../db/mysqlconn');
 function SqlRepository(tableName, cols, rest) {
     var result = null;
     var conn = mysqlConn.pool();
-    conn.connect();
-    conn.query('SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = "' + tableName + '"', function (err, rows, fields) {
+    conn.query('SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = "' + tableName + '"', function (err, rows) {
         if (err) throw err;
+    
+        console.log(rows);
+        result = rows;
     });
 
     if (result === null || result === undefined) {
@@ -36,15 +38,20 @@ function SqlRepository(tableName, cols, rest) {
         }
 
         queryStr = queryStr + ' )';
-        conn.query(queryStr);
+        conn.query(queryStr, function(err, rows) {
+
+        });
 
     }
+    console.log(queryStr);
 
     this.tableName = tableName;
-    conn.destroy();
+    console.log('===========================================');
+    console.log(this.tableName);
+    console.log('===========================================');
 }
 
-SqlRepository.prototype.findAll = (conn) => {
+SqlRepository.prototype.findAll = function (conn) {
     var result = null;
 
     conn.query('SELECT * FROM ' + this.tableName, (error, rows) => {
@@ -56,9 +63,9 @@ SqlRepository.prototype.findAll = (conn) => {
     return result;
 };
 
-SqlRepository.prototype.findBy = (conn,  cols) => {
+SqlRepository.prototype.findBy = function(tableName,conn,  cols) {
     var result = null;
-    var queryString = 'SELECT * FROM ' + this.tableName;
+    var queryString = 'SELECT * FROM ' + tableName;
 
     if (cols !== null) {
         queryString = queryString + ' WHERE ';
@@ -70,7 +77,7 @@ SqlRepository.prototype.findBy = (conn,  cols) => {
         });
     }
 
-    conn.query(queryString, (error, rows) => {
+    conn.query(queryString, function(error, rows) {
         if (error) throw error;
 
         result = rows;
@@ -79,21 +86,23 @@ SqlRepository.prototype.findBy = (conn,  cols) => {
     return rows;
 };
 
-SqlRepository.prototype.insert = (conn,  cols) => {
+SqlRepository.prototype.insert = function(tableName,conn,  cols) {
     var result = null;
-    var queryString = 'INSERT INTO ' + this.tableName + ' (';
+    console.log(this.tableName);
+    var queryString = 'INSERT INTO ' + tableName + ' (';
     var queryString2 = ' VALUES (';
 
     cols.forEach(col => {
         queryString = queryString + col.name + ' ,';
-        queryString2 = (col.isStringData) ? queryString2 + '"' + col.value + '" ,' : queryString + col.value + ' ,';
+        queryString2 = (col.isStringData) ? queryString2 + '"' + col.value + '" ,' : queryString2 + col.value + ' ,';
 
     });
 
     queryString = queryString.substring(0, queryString.length - 1) + ')';
     queryString2 = queryString2.substring(0, queryString2.length - 1) + ')';
+    console.log(queryString + queryString2);
 
-    conn.query(queryString + queryString2, (error, rows) => {
+    conn.query(queryString + queryString2, function(error, rows) {
         if (error) throw error;
 
         result = rows;
@@ -102,9 +111,9 @@ SqlRepository.prototype.insert = (conn,  cols) => {
     return result;
 };
 
-SqlRepository.prototype.delete = (conn, cols) => {
+SqlRepository.prototype.delete = function(tableName,conn, cols) {
     var result = null;
-    var queryString = 'DELETE FROM ' + this.tableName;
+    var queryString = 'DELETE FROM ' + tableName;
 
     if (cols !== null && cols !== undefined && cols.length > 0) {
         queryString = queryString + ' WHERE';
@@ -118,7 +127,7 @@ SqlRepository.prototype.delete = (conn, cols) => {
 
     }
 
-    conn.query(queryString, (error, rows) => {
+    conn.query(queryString, function(error, rows) {
         if (error) throw error;
 
         result = rows;
@@ -127,9 +136,9 @@ SqlRepository.prototype.delete = (conn, cols) => {
     return result;
 };
 
-SqlRepository.prototype.update = (conn, cols, conds) => {
+SqlRepository.prototype.update = function(tableName,conn, cols, conds) {
     var result = null;
-    var queryString = 'UPDATE ' + this.tableName + ' SET ';
+    var queryString = 'UPDATE ' + tableName + ' SET ';
 
     if (cols !== null && cols !== undefined && cols.length > 0) {
 
@@ -151,7 +160,7 @@ SqlRepository.prototype.update = (conn, cols, conds) => {
         });
     }
 
-    conn.query(queryString, (error, rows) => {
+    conn.query(queryString, function(error, rows) {
         if (error) throw error;
 
         result = rows;

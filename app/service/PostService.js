@@ -13,9 +13,8 @@ var PostService = function () {
     this._commentRepository = new CommentRepository();
 };
 
-PostService.prototype.createPost = (postData) => {
+PostService.prototype.createPost = function (postData) {
     var connection = mysqlConn.pool();
-    connection.connect();
 
     var userCols = [{
         name: 'id',
@@ -27,7 +26,7 @@ PostService.prototype.createPost = (postData) => {
     var userResult = this._userRepository.findBy(connection, userCols);
 
     if (userResult === null || userResult[0].status !== 1) {
-        connection.destroy();
+
         return {
             code: 41002     // code for user not eligible to post
         }
@@ -54,19 +53,19 @@ PostService.prototype.createPost = (postData) => {
     var result = this._postRepository.insert(connection, cols);
 
     if (result !== null) {
-        connection.destroy();
+
         return result;
     } else {
-        connection.destroy();
+
         return {
             code: 41001     // code for post not saved properly
         }
     }
 };
 
-PostService.prototype.findPostByCategory = (category) => {
+PostService.prototype.findPostByCategory = function (category) {
     var connection = mysqlConn.pool();
-    connection.connect();
+
     var cols = [{
         name: 'category',
         value: category,
@@ -77,7 +76,7 @@ PostService.prototype.findPostByCategory = (category) => {
     var categoryResult = this._categoryRepository.findBy(connection, cols);
 
     if (categoryResult === null || categoryResult.length <= 0) {
-        connection.destroy();
+
         return {
             code: 41003     // code for category not found
         }
@@ -95,7 +94,7 @@ PostService.prototype.findPostByCategory = (category) => {
     var postResults = this._postRepository.findBy(connection, postCols);
 
     if (postResults === null) {
-        connection.destroy();
+
         return {
             code: 41004     // code for error with post retrieving;
         }

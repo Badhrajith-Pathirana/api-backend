@@ -1,5 +1,5 @@
 const {SqlRepository} = require("../data/sqltemplate");
-var UserRepository = function () {
+function UserRepository() {
     this.tabName = 'user';
     this.cols = [{
         name: 'id',
@@ -70,7 +70,7 @@ var UserRepository = function () {
         isFinal: true
     }];
 
-    SqlRepository.call(this.tabName, this.cols, null);
+    SqlRepository.call('','user', this.cols, []);
 };
 
 UserRepository.prototype = Object.create(SqlRepository.prototype);

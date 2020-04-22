@@ -36,7 +36,7 @@ var PostRepository = function () {
 
     var rest = 'CONSTRAINT fk_user_post FOREIGN KEY (posted_user) REFERENCES user(id), CONSTRAINT fk_post_category FOREIGN KEY (category_id) REFERENCES category(id)';
 
-    SqlRepository.call(this.tabName, this.cols, rest);
+    SqlRepository.call('','post', this.cols, rest);
 };
 
 PostRepository.prototype = Object.create(SqlRepository.prototype);

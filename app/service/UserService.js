@@ -3,11 +3,12 @@ var {UserRepository} = require("../repository/UserRepository");
 
 var UserService = function () {
     this.userRepository = new UserRepository();
+    console.log(this.userRepository);
 };
 
-UserService.prototype.loginUser = (userData) => {
+UserService.prototype.loginUser = function (userData) {
     var connection = mysqlConn.pool();
-    connection.connect();
+
     var cols = [{
         name: 'username',
         condition: '=',
@@ -18,10 +19,10 @@ UserService.prototype.loginUser = (userData) => {
         condition: '=',
         value: userData.password
     }];
-    var result = this.userRepository.findBy(connection, cols);
+    var result = this.userRepository.findBy('user',connection, cols);
 
     if (result !== null) {
-        connection.destroy();
+
         result.password = null;
         if (result.status === 1) {
             return result;
@@ -31,79 +32,80 @@ UserService.prototype.loginUser = (userData) => {
             }
         }
     } else {
-        connection.destroy();
+
         return {
             code: '40002' // code for username or password invalid
         }
     }
 };
 
-UserService.prototype.registerUser = (userData) => {
+UserService.prototype.registerUser = function (userData)  {
     console.log("SERVICE DATA ::::::::::::::::::::::::::::::",userData);
-    // var connection = mysqlConn.pool();
-    // connection.connect();
-    // var cols = [{
-    //     name: 'first_name',
-    //     value: userData.firstName,
-    //     isStringData: true
-    // }, {
-    //     name: 'last_name',
-    //     value: userData.lastName,
-    //     isStringData: true
-    // }, {
-    //     name: 'user_type',
-    //     value: userData.userType === 'exp' ? 'EXPERT' : userData.userType === 'std' ? 'STUDENT' : null,
-    //     isStringData: true
-    // }, {
-    //     name: 'username',
-    //     value: userData.username,
-    //     isStringData: true
-    // }, {
-    //     name: 'national_id',
-    //     value: userData.nic,
-    //     isStringData: true
-    // }, {
-    //     name: 'email',
-    //     value: userData.email,
-    //     isStringData: true
-    // }, {
-    //     name: 'profession',
-    //     value: userData.profession,
-    //     isStringData: true
-    // }, {
-    //     name: 'affilidate',
-    //     value: userData.afflidate,
-    //     isStringData: true
-    // }, {
-    //     name: 'password',
-    //     value: userData.password,
-    //     isStringData: true
-    // }, {
-    //     name: 'status',
-    //     value: 0,
-    //     isStringData: false
-    // }];
-    //
-    // var result = this.userRepository.insert(connection, cols);
-    //
-    // if (result !== null) {
-    //     connection.destroy();
-    //     if (result.password) {
-    //         result.password = null;
-    //     }
-    //     return result;
-    // } else {
-    //     connection.destroy();
-    //     return {
-    //         code: 40003     // code for error with user registration
-    //     }
-    // }
+    var connection = mysqlConn.pool();
+
+    var cols = [{
+        name: 'first_name',
+        value: userData.firstName,
+        isStringData: true
+    }, {
+        name: 'last_name',
+        value: userData.lastName,
+        isStringData: true
+    }, {
+        name: 'user_type',
+        value: userData.userType === 'exp' ? 'EXPERT' : userData.userType === 'std' ? 'STUDENT' : null,
+        isStringData: true
+    }, {
+        name: 'username',
+        value: userData.username,
+        isStringData: true
+    }, {
+        name: 'national_id',
+        value: userData.nic,
+        isStringData: true
+    }, {
+        name: 'email',
+        value: userData.email,
+        isStringData: true
+    }, {
+        name: 'profession',
+        value: userData.profession,
+        isStringData: true
+    }, {
+        name: 'affilidate',
+        value: userData.afflidate,
+        isStringData: true
+    }, {
+        name: 'password',
+        value: userData.password,
+        isStringData: true
+    }, {
+        name: 'status',
+        value: 0,
+        isStringData: false
+    }];
+    console.log(this);
+
+    var result = this.userRepository.insert('user',connection, cols);
+
+    if (result !== null) {
+
+        if (result.password) {
+            result.password = null;
+        }
+        return result;
+    } else {
+
+        return {
+            code: 40003     // code for error with user registration
+        }
+    }
 
 };
 
-UserService.prototype.findUnAcceptedUsers = () => {
+UserService.prototype.findUnAcceptedUsers = function() {
     var connection = mysqlConn.pool();
-    connection.connect();
+
 
     var cols = [{
         name: 'status',
@@ -112,9 +114,9 @@ UserService.prototype.findUnAcceptedUsers = () => {
         isStringData: false,
     }];
 
-    var results = this.userRepository.findBy(connection, cols);
+    var results = this.userRepository.findBy('user',connection, cols);
 
-    connection.destroy();
+
 
     results.forEach(res => {
         res.password = null;
@@ -123,9 +125,9 @@ UserService.prototype.findUnAcceptedUsers = () => {
     return results;
 };
 
-UserService.prototype.acceptOrDeclineUser = (userId, statusId) => {
+UserService.prototype.acceptOrDeclineUser = function (userId, statusId) {
     var connection = mysqlConn.pool();
-    connection.connect();
+
 
     var cols = [{
         name: 'id',
@@ -134,7 +136,7 @@ UserService.prototype.acceptOrDeclineUser = (userId, statusId) => {
         isStringData: false
     }];
 
-    var result = this.userRepository.findBy(connection, cols);
+    var result = this.userRepository.findBy('user',connection, cols);
 
     if (result === null) return {
         code: 40004     // code to user not found
@@ -153,14 +155,14 @@ UserService.prototype.acceptOrDeclineUser = (userId, statusId) => {
         condition: '='
     }];
 
-    var updateResult = this.userRepository.update(connection, updateCols, updateConds);
+    var updateResult = this.userRepository.update('user',connection, updateCols, updateConds);
 
     if (updateResult === null) {
-        connection.destroy();
+
 
         return updateResult;
     } else {
-        connection.destroy();
+
 
         return {
             code: 40005     //  code for user update fail

@@ -15,9 +15,9 @@ var CategoryRepository = function () {
         notNull: true,
         isPrimary: false,
         isFinal: false
-    },];
+    }];
 
-    SqlRepository.call(this.tabName, this.cols, null);
+    SqlRepository.call('','category', this.cols, []);
 };
 
 CategoryRepository.prototype = Object.create(SqlRepository.prototype);
