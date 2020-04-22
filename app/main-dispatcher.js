@@ -8,6 +8,6 @@ const router = express.Router();
 router.use(express.json());
 router.use(cors());
 
-router.use('/api/v1/users', usersRouter);
+router.use('/api/v1/members', usersRouter);
 
 module.exports=router;
